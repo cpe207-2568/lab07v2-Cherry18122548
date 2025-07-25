@@ -15,3 +15,40 @@
   /* Microsoft Edge */
   color: red;
 }
+/* สถานะ default (ยังไม่ validate): สีเทา */
+.form-control {
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease-in-out;
+}
+
+/* สถานะ validate ไม่ผ่าน: สีแดง */
+.form-control.is-invalid {
+  border-color: red;
+}
+
+/* สถานะ validate ผ่าน: สีเขียว */
+.form-control.is-valid {
+  border-color: green;
+}
+
+/* สีปุ่ม Register เป็นสีเขียว */
+#submit-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+#submit-btn:hover {
+  background-color: #218838;
+}
+
+/* ปุ่ม Reset เป็นสีแดง */
+#reset-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+#reset-btn:hover {
+  background-color: #c82333;
+}

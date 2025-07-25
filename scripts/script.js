@@ -1,47 +1,95 @@
-// create reference for input fields.
-const firstNameInput = document.querySelector("#first-name-input");
-const lastNameInput = document.querySelector("#last-name-input");
+// reference inputs
+const firstName = document.querySelector("#first-name-input");
+const lastName = document.querySelector("#last-name-input");
+const email = document.querySelector("#email-input");
+const password = document.querySelector("#password-input");
+const confirmPassword = document.querySelector("#password-confirm-input");
 
-// create reference for buttons.
+// reference buttons
 const submitBtn = document.querySelector("#submit-btn");
+const resetBtn = document.querySelector("#reset-btn");
 
-// simple email validation
+// Validate email function
 function validateEmail(email) {
-  var atPos = email.indexOf("@");
-  var dotPos = email.lastIndexOf(".");
-  return atPos > 0 && dotPos > atPos + 1 && dotPos < email.length - 1;
+  const at = email.indexOf("@");
+  const dot = email.lastIndexOf(".");
+  return at > 0 && dot > at + 1 && dot < email.length - 1;
 }
 
-// add callback function for firstNameInput.onkeyup event
-firstNameInput.onkeyup = () => {
-  firstNameInput.classList.remove("is-valid");
-  firstNameInput.classList.remove("is-invalid");
-};
+// Helpers
+function resetInput(input) {
+  input.classList.remove("is-valid", "is-invalid");
+  input.classList.add("border", "border-secondary");
+}
+function markValid(input) {
+  input.classList.remove("is-invalid", "border-secondary");
+  input.classList.add("is-valid");
+}
+function markInvalid(input) {
+  input.classList.remove("is-valid", "border-secondary");
+  input.classList.add("is-invalid");
+}
 
-// add callback functions for other input events.
-// (lastname, email, password, confirm password)
+// Main validate function
+function validateForm() {
+  let valid = true;
 
-// add callback function for submit button.
-submitBtn.onclick = () => {
-  isFirstNameOk = false;
-
-  // validate first name
-  if (firstNameInput.value !== "CPE207") {
-    firstNameInput.classList.add("is-invalid");
+  if (firstName.value.trim() === "") {
+    markInvalid(firstName);
+    valid = false;
   } else {
-    firstNameInput.classList.add("is-valid");
-    isFirstNameOk = true;
+    markValid(firstName);
   }
 
-  // validate last name
+  if (lastName.value.trim() === "") {
+    markInvalid(lastName);
+    valid = false;
+  } else {
+    markValid(lastName);
+  }
 
-  // validate email
+  if (!validateEmail(email.value.trim())) {
+    markInvalid(email);
+    valid = false;
+  } else {
+    markValid(email);
+  }
 
-  // validate password
+  if (password.value.length < 6) {
+    markInvalid(password);
+    valid = false;
+  } else {
+    markValid(password);
+  }
 
-  // validate confirm password
+  if (confirmPassword.value !== password.value || confirmPassword.value.length < 6) {
+    markInvalid(confirmPassword);
+    valid = false;
+  } else {
+    markValid(confirmPassword);
+  }
 
-  if (isFirstNameOk) alert("Registered successfully");
-};
+  return valid;
+}
 
-// add callback function for Reset button.
+// On register click
+submitBtn.addEventListener("click", () => {
+  if (validateForm()) {
+    alert("Registered successfully");
+  }
+});
+
+// On reset click
+resetBtn.addEventListener("click", () => {
+  [firstName, lastName, email, password, confirmPassword].forEach((input) => {
+    input.value = "";
+    resetInput(input);
+  });
+});
+
+// When typing: return to gray border
+[firstName, lastName, email, password, confirmPassword].forEach((input) => {
+  input.addEventListener("input", () => {
+    resetInput(input);
+  });
+});
